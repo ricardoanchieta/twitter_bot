@@ -1,4 +1,5 @@
 src/credenciais.txt
+src/last_seen.txt
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
