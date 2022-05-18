@@ -6,6 +6,7 @@ import time
 from src.functions import get_credencial
 
 CREDENCIAL_FILE = 'src/credenciais.txt'
+LAST_SEEN_FILE = 'src/last_seen.txt'
 
 #login no bot
 api_key = get_credencial(CREDENCIAL_FILE)[0]
@@ -25,12 +26,19 @@ except:
     print('Failed authentication')
 
 #funcao de responder mensoes
-#pode apagar isso essa funcao aqui ainda to dev
 def responder_mentions():
-    mention = api.mentions_timeline()
-    print(mention)
+  read_last_seen_str = str(read_last_seen(FILE_NAME))
+  mentions = api.mentions_timeline(read_last_seen(FILE_NAME), tweet_mode = 'extended')
+  print('Ultimo ID pesquisado: ' + read_last_seen_str)
+  for mention in mentions:
+    print('Mention tweet found!')
+    frase_sobis = frases_sobiel()
+    store_last_seen(FILE_NAME, mention.id)
+    api.update_status('@' + mention.user.screen_name + ' ' + frase_sobis, in_reply_to_status_id = mention.id)
 
-responder_mentions()
+while True:
+    responder_mentions()
+    time.sleep(15)
 
 
 
